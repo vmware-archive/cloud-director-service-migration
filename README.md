@@ -20,9 +20,9 @@ sh scripts/migrate.sh
 
 ## Documentation
 % sh migrate.sh
-Enter site FQDN name: <hostname>.<domainname>
-Enter admin username for site <hostname>.<domainname>: <adminUserName>
-Enter admin password for site <hostname>.<domainname>: <adminPassword>
+Enter on-prem VCD site FQDN name: <hostname>.<domainname>
+Enter admin username for on-prem VCD site <hostname>.<domainname>: <adminUserName>
+Enter admin password for on-prem VCD site <hostname>.<domainname>: <adminPassword>
 Successfully collected <adminUserName> credentials for <hostname>.<domainname>
 Is <hostname>.<domainname> Appliance based [true for Appliance, false for Non-Appliance]: <true/false>
 #With the credentials provided, extracts the supported API version
