@@ -581,11 +581,11 @@ function main () {
        upgradeCategory="$UPGRADE_CATEGORY"
     else
         local compatiblityResponse=$(checkCompatible $SITE_NAME $SITE_ADMIN_USERNAME $SITE_ADMIN_PASSWORD $primaryCell $CELL_USERNAME $CELL_USERPASSWORD $envUrn $CSP_ORG_REFRESH_TOKEN)
-        log_msg DEBUG: "Compatiblity Response: $compatiblityResponse"
+        log_msg DEBUG: "Compatibility Response: $compatiblityResponse"
         local isCompatible=$(echo $compatiblityResponse | jq -r .build.compatible)
         if [ "$isCompatible" != true ] ; then
             echo $compatiblityResponse | jq .
-            die 1 "Compatiblity check has been failed, check the API response"
+            die 1 "Compatibility check has been failed, check the API response"
         fi
         upgradeCategory=$(echo $compatiblityResponse | jq -r .build.cdsBuildCategory)
     fi
