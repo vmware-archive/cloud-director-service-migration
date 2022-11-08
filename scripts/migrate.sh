@@ -403,27 +403,27 @@ function main () {
     fi
 
     if [[ ! -z "$SITE_NAME" ]]; then
-        read -p "Site FQDN name (found: $SITE_NAME), wish to reuse [y/n]: " reuse
+        read -p "On-Prem VCD site FQDN name (found: $SITE_NAME), wish to reuse [y/n]: " reuse
         validateFlagReuse $reuse
     else
         reuse=n
     fi
     if [[ $reuse == n || $reuse == N ]]; then
-        read -p "Enter site FQDN name: " SITE_NAME
+        read -p "Enter on-prem VCD site FQDN name: " SITE_NAME
     fi
 
     if [[ ! -z "$SITE_ADMIN_USERNAME" ]]; then
-        read -p "Site admin user name (found: $SITE_ADMIN_USERNAME), wish to reuse [y/n]: " reuse
+        read -p "On-Prem VCD site admin user name (found: $SITE_ADMIN_USERNAME), wish to reuse [y/n]: " reuse
         validateFlagReuse $reuse
     else
         reuse=n
     fi
     if [[ $reuse == n || $reuse == N ]]; then
-        read -p "Enter admin username for site $SITE_NAME: " SITE_ADMIN_USERNAME
+        read -p "Enter admin username for on-prem VCD site $SITE_NAME: " SITE_ADMIN_USERNAME
     fi
 
     if [[ -z "$SITE_ADMIN_PASSWORD" ]]; then
-        read -p "Enter admin password for site $SITE_NAME: " -s SITE_ADMIN_PASSWORD
+        read -p "Enter admin password for on-prem VCD site $SITE_NAME: " -s SITE_ADMIN_PASSWORD
     fi
     log_msg INFO: "Successfully collected $SITE_ADMIN_USERNAME credentials for $SITE_NAME"
 
