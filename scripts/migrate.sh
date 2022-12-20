@@ -550,9 +550,16 @@ function main () {
 
     if [ $envCount -lt 1 ]
     then
-        die 1 "No environments are associated for org: $CSP_ORG_ID"
+        echo $envResponse | jq .
+        local responseMessage=$(echo $envResponse | jq -r '.message')
+        if [[ ! -z "$responseMessage" ]]; then
+            die 1 "Received $responseMessage Review roles associated with CSP Org refresh token"
+        else
+            die 1 "No environments are associated for org: $CSP_ORG_ID"
+        fi
         exit 1
     fi
+
     log_msg INFO: "Found following $envCount environments in org: $CSP_ORG_ID"
     echo $envResponse | jq -r .values[].name
     local envUrn=""
