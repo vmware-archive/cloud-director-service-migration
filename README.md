@@ -65,8 +65,8 @@ The script execution is as follows
     1. Upon successful upload, scripted tool outputs "Upload Resource Task URN: <uploadTaskUrn>"
     2. If upload failed, scripted tool exits by printing API response and "Upload failed, check the API response"
 14. Scripted tool setups the maintenance mode in all the cells by running /opt/vmware/vcloud-director/bin/cell-management-tool cell -m true -u <adminUserName> -p '<adminPassword>' depends on environmental variable.
-    1. If ENABLE_MAINTENANCE_MODE is set to false, scripted tool will not activate maintenance mode
-    2. If ENABLE_MAINTENANCE_MODE is not set (or) set to true, scripted tool will activate maintenance mode
+    1. If ACTIVATE_MAINTENANCE_MODE is set to false, scripted tool will not activate maintenance mode
+    2. If ACTIVATE_MAINTENANCE_MODE is not set (or) set to true, scripted tool will activate maintenance mode
 15. Scripted tool invokes the migrate API
     1. Upon successful task initialisation, scripted tool outputs "Migrate to CDI Task ID: <migrateTaskUrn>
     2. Upon failure, scripted tool exits by printing API response and "Migration failed, check the API response

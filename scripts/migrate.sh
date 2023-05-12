@@ -623,18 +623,18 @@ function main () {
     local uploadTaskUuid=$(echo $uploadTaskUrn | sed -e "s/urn:vcdc:task://g")
     log_msg INFO: "Upload Resource Task ID: $uploadTaskUuid"
 
-    if [ -n "$ENABLE_MAINTENANCE_MODE" ]; then
-        ENABLE_MAINTENANCE_MODE=$(echo $ENABLE_MAINTENANCE_MODE | tr '[:upper:]' '[:lower:]')
-        if ! [[ $ENABLE_MAINTENANCE_MODE == true || $ENABLE_MAINTENANCE_MODE == false ]]
+    if [ -n "$ACTIVATE_MAINTENANCE_MODE" ]; then
+        ACTIVATE_MAINTENANCE_MODE=$(echo $ACTIVATE_MAINTENANCE_MODE | tr '[:upper:]' '[:lower:]')
+        if ! [[ $ACTIVATE_MAINTENANCE_MODE == true || $ACTIVATE_MAINTENANCE_MODE == false ]]
         then
-            log_msg INFO: "Unrecognized value for 'Enable maintenance mode' $ENABLE_MAINTENANCE_MODE, expecting [true/false], setting it to true"
-            ENABLE_MAINTENANCE_MODE=true;
+            log_msg INFO: "Unrecognized value for 'Activate maintenance mode' $ACTIVATE_MAINTENANCE_MODE, expecting [true/false], setting it to true"
+            ACTIVATE_MAINTENANCE_MODE=true;
         fi
     else
-        ENABLE_MAINTENANCE_MODE=true;
+        ACTIVATE_MAINTENANCE_MODE=true;
     fi
 
-    if [ "$ENABLE_MAINTENANCE_MODE" = true ]; then
+    if [ "$ACTIVATE_MAINTENANCE_MODE" = true ]; then
         log_msg INFO: "Setting up maintenance mode on all cloud cells"
         for cell in ${cloudCells}
         do
