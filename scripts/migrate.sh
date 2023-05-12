@@ -623,18 +623,33 @@ function main () {
     local uploadTaskUuid=$(echo $uploadTaskUrn | sed -e "s/urn:vcdc:task://g")
     log_msg INFO: "Upload Resource Task ID: $uploadTaskUuid"
 
-    log_msg INFO: "Setting up maintenance mode on all cloud cells"
-    for cell in ${cloudCells}
-    do
-        log_msg DEBUG: Entering maintenance mode on $cell
-        sshpass -p ${CELL_USERPASSWORD} ssh -o StrictHostKeyChecking=no ${CELL_USERNAME}@${cell} "/opt/vmware/vcloud-director/bin/cell-management-tool cell -m true -u ${SITE_ADMIN_USERNAME} -p '${SITE_ADMIN_PASSWORD}'"
-        local -i maintenance_status=$?
-        if [ $maintenance_status -ne 0 ]; then
-           die $maintenance_status "Exit status $maintenance_status while entering maintenance mode on $cell"
+    if [ -n "$ENABLE_MAINTENANCE_MODE" ]; then
+        ENABLE_MAINTENANCE_MODE=$(echo $ENABLE_MAINTENANCE_MODE | tr '[:upper:]' '[:lower:]')
+        if ! [[ $ENABLE_MAINTENANCE_MODE == true || $ENABLE_MAINTENANCE_MODE == false ]]
+        then
+            log_msg INFO: "Unrecognized value for 'Enable maintenance mode' $ENABLE_MAINTENANCE_MODE, expecting [true/false], setting it to true"
+            ENABLE_MAINTENANCE_MODE=true;
         fi
-        log_msg DEBUG: Successfully entered maintenance mode on $cell
-    done
-    log_msg INFO: "Successfully entered maintenance mode on all cloud cells"
+    else
+        ENABLE_MAINTENANCE_MODE=true;
+    fi
+
+    if [ "$ENABLE_MAINTENANCE_MODE" = true ]; then
+        log_msg INFO: "Setting up maintenance mode on all cloud cells"
+        for cell in ${cloudCells}
+        do
+            log_msg DEBUG: Entering maintenance mode on $cell
+            sshpass -p ${CELL_USERPASSWORD} ssh -o StrictHostKeyChecking=no ${CELL_USERNAME}@${cell} "/opt/vmware/vcloud-director/bin/cell-management-tool cell -m true -u ${SITE_ADMIN_USERNAME} -p '${SITE_ADMIN_PASSWORD}'"
+            local -i maintenance_status=$?
+            if [ $maintenance_status -ne 0 ]; then
+                die $maintenance_status "Exit status $maintenance_status while entering maintenance mode on $cell"
+            fi
+            log_msg DEBUG: Successfully entered maintenance mode on $cell
+        done
+        log_msg INFO: "Successfully entered maintenance mode on all cloud cells"
+    else
+        log_msg DEBUG: "Maintenance mode is not activated for $SITE_NAME"
+    fi
 
     local migrateResponse=$(migrateToCDS $SITE_NAME $SITE_ADMIN_USERNAME $SITE_ADMIN_PASSWORD $primaryCell $CELL_USERNAME $CELL_USERPASSWORD $upgradeCategory $uploadTaskUuid $CDI_NAME $envUrn $CSP_ORG_ID $CSP_ORG_REFRESH_TOKEN)
     log_msg DEBUG: "Migrate to CDI Task Response: $migrateResponse"
