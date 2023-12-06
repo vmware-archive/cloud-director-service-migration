@@ -84,10 +84,10 @@ function getCloudCells() {
     local siteAdminUserName=${3}
     local siteAdminPassword=${4}
 
-    local jwtAccessToken=$(curl -is -k -H "Accept:application/*+json;version=$apiVersion" \
+    local jwtAccessToken=$(curl -is -k -H "Accept:application/*;version=$apiVersion" \
         -u "$siteAdminUserName@System:$siteAdminPassword" \
-        -X POST  "https://$siteName/api/sessions" \
-        | grep X-VMWARE-VCLOUD-ACCESS-TOKEN | awk '{print $2}'  |  tr -d [:space:])
+        -X POST  "https://$siteName/cloudapi/1.0.0/sessions/provider" \
+        | grep -i X-VMWARE-VCLOUD-ACCESS-TOKEN | awk '{print $2}'  |  tr -d [:space:])
 
     if [ -z "$jwtAccessToken" ]; then
         die 1 "Unable to establish the session with $siteName"
